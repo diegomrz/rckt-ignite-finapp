@@ -1,5 +1,3 @@
-## FinApi - Financeira
-
 <h1 align="center">
   RocketSeat - FINAPI - Financeira
 </h1>

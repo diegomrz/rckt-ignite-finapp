@@ -12,8 +12,8 @@
     <img alt="Made by diegomrz" src="https://img.shields.io/badge/linkedin-diegomrz-blue">
   </a>
 
-  <a href="https://skylab.rocketseat.com.br/">
-    <img alt="Skylab RocketSeat" src="https://img.shields.io/badge/skylab-Rocketseat-blueviolet">
+  <a href="https://app.rocketseat.com.br/ignite/">
+    <img alt="Skylab RocketSeat" src="https://img.shields.io/badge/RocketSeat-Ignite-blueviolet">
   </a>
 
 </p>

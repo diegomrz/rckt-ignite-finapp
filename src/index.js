@@ -4,14 +4,6 @@ const app = express();
 app.use(express.json());
 const customers = [];
 
-function soma(balance, value){
-  return balance + value;
-}
-
-function subtracao(balance, value){
-  return balance - value;
-}
-
 function verifyIfExistsAccountCPF(request, response, next){
   const { cpf } = request.headers; 
   const customer = customers.find(customer => customer.cpf === cpf);
@@ -28,9 +20,9 @@ function verifyIfExistsAccountCPF(request, response, next){
 function getBalance(statement){
   const balance = statement.reduce((acc, operation) => {
     if(operation.type === 'credit') {
-      return soma(acc, operation);
+      return acc + operation.amount;
     }else {
-      return subtracao(acc, operation);
+      return acc - operation.amount;
     }
   }, 0);
 
@@ -71,7 +63,6 @@ app.post('/deposit', verifyIfExistsAccountCPF, (request, response) =>{
   }
 
   customer.statement.push(statementOperation);
-
   return response.status(201).send();
 });
 
@@ -119,13 +110,25 @@ app.put("/account", verifyIfExistsAccountCPF, (request, response) => {
   return response.status(201).json(customer);
 })
 
+app.get("/account", verifyIfExistsAccountCPF, (request, response) => {
+  const { customer } = request;
+  return response.status(200).json(customer);
+})
+
 app.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
   const { customer } = request;
 
-  customer.splice(customer, 1);
+  customers.splice(customer, 1);
 
   return response.status(200).json(customers);
 })
 
+app.get("/balance", verifyIfExistsAccountCPF, (request, response) => {
+  const { customer } = request;
+
+  const balance = getBalance(customer.statement);
+
+  return response.status(200).json(balance);
+})
 
 app.listen(3333);

@@ -4,6 +4,14 @@ const app = express();
 app.use(express.json());
 const customers = [];
 
+function soma(balance, value){
+  return balance + value;
+}
+
+function subtracao(balance, value){
+  return balance - value;
+}
+
 function verifyIfExistsAccountCPF(request, response, next){
   const { cpf } = request.headers; 
   const customer = customers.find(customer => customer.cpf === cpf);
@@ -20,9 +28,9 @@ function verifyIfExistsAccountCPF(request, response, next){
 function getBalance(statement){
   const balance = statement.reduce((acc, operation) => {
     if(operation.type === 'credit') {
-      return acc + operation.amount;
+      return soma(acc, operation);
     }else {
-      return acc - operation.amount;
+      return subtracao(acc, operation);
     }
   }, 0);
 
@@ -86,5 +94,38 @@ app.post('/withdraw', verifyIfExistsAccountCPF, (request, response) =>{
   customer.statement.push(statementOperation);
   return response.status(201).send();
 })
+
+app.get('/statement/date', verifyIfExistsAccountCPF, (request, response) =>{
+  const { customer } = request;
+  const { date } = request.query;
+
+  const dateFormat = new Date(date + " 00:00");
+  
+  const statement = customer.statement.filter(
+    (statement) => 
+      statement.created_at.toDateString() === 
+      new Date(dateFormat).toDateString()
+  );
+
+  return response.status(200).json(statement);
+})
+
+app.put("/account", verifyIfExistsAccountCPF, (request, response) => {
+  const { name } = request.body;
+  const { customer } = request;
+
+  customer.name = name;
+
+  return response.status(201).json(customer);
+})
+
+app.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
+  const { customer } = request;
+
+  customer.splice(customer, 1);
+
+  return response.status(200).json(customers);
+})
+
 
 app.listen(3333);

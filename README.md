@@ -4,7 +4,7 @@
 
 <p align="center">
 
-  <img alt="GitHub language count" src="https://img.shields.io/github/last-commit/diegomrz/rckt-ignite-finapp ">
+  <img alt="GitHub language count" src="https://img.shields.io/github/last-commit/diegomrz/rckt-ignite-finapp">
 
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/diegomrz/rckt-ignite-finapp">
 
